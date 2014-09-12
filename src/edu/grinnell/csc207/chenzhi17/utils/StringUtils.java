@@ -1,6 +1,6 @@
 package edu.grinnell.csc207.chenzhi17.utils;
 
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class StringUtils
 {
@@ -8,7 +8,7 @@ public class StringUtils
   /**
    * This method splits a given string using a constant delimiter
    * @param input The String to split
-   * @param delimiter The character of which spliting is based on
+   * @param delimiter The character of which splitting is based on
    * @return an array of strings elements representing the splits of input
    * preconditions:
    * postconditions:

@@ -47,7 +47,8 @@ public class Fraction
   public Fraction(BigInteger num, BigInteger denom)
   {
     // when 'num' and 'denom' are both negative find abs() of 'num' and 'denom'
-    if ((num.compareTo(BigInteger.ZERO) == -1) && (denom.compareTo(BigInteger.ZERO) == -1))
+    if ((num.compareTo(BigInteger.ZERO) == -1)
+        && (denom.compareTo(BigInteger.ZERO) == -1))
       {
         num = num.abs();
         denom = denom.abs();
@@ -263,8 +264,8 @@ public class Fraction
     BigInteger numerator;
     BigInteger denominator;
 
-      // different mechanisms of raising the fraction according 
-     // to the sign of exponent
+    // different mechanisms of raising the fraction according 
+    // to the sign of exponent
     if (expt < 0)
       {
         int newExpt = Math.abs(expt);
@@ -305,12 +306,14 @@ public class Fraction
   public static void main(String[] args)
     throws Exception
   {
+    /*
     Fraction f1;
     f1 = new Fraction(-10, 3);
     Fraction f2;
     f2 = new Fraction(2, 5);
     Fraction f3;
     f3 = new Fraction(5, -9);
+    */
 
     /*   System.out.println();
        System.out.println(f1);
@@ -371,9 +374,10 @@ public class Fraction
        System.out.println(f2.pow(-3));
        System.out.println(f3.pow(0));
        */
-    System.out.println(f1.negate());
-    System.out.println(f2.negate());
-    System.out.println(f3.negate());
+    //System.out.println(f1.negate());
+    //System.out.println(f2.negate());
+    //System.out.println(f3.negate());
+
   }//main()
 
 } // class Fraction
