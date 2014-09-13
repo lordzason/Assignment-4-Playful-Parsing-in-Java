@@ -2,6 +2,10 @@ package edu.grinnell.csc207.chenzhi17.utils;
 
 //import java.util.Arrays;
 
+/**
+ * @author chenzhi17
+ *
+ */
 public class StringUtils
 {
 
