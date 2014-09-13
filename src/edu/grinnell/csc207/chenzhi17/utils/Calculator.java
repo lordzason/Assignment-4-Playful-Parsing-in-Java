@@ -59,4 +59,59 @@ public class Calculator
     return answer;
   }
 
+  public static Fraction eval1(String input)
+  {
+    String[] result = StringUtils.splitAt(input, ' ');
+
+    Fraction answer = new Fraction(result[0]);
+
+    int resultIndex;
+
+    //Testing Purposes
+    /*
+    for (int i = 0; i < result.length; i++)
+      {
+        System.out.println("result[" + i + "]=" + result[i]);
+      }
+    System.out.println("answer=" + answer);
+    */
+
+    for (int i = 0; i < result.length; i++)
+      {
+        resultIndex = i;
+
+        if (result[i].equals("+"))
+          {
+            Fraction second = new Fraction(result[i + 1]);
+            answer = answer.add(second);
+          }
+        else if (result[i].equals("-"))
+          {
+            Fraction second = new Fraction(result[i + 1]);
+            answer = answer.subtract(second);
+          }
+        else if (result[i].equals("*"))
+          {
+            Fraction second = new Fraction(result[i + 1]);
+            answer = answer.multiply(second);
+          }
+        else if (result[i].equals("/"))
+          {
+            Fraction second = new Fraction(result[i + 1]);
+            answer = answer.divide(second);
+          }
+        else if (result[i].equals("^"))
+          {
+            answer = answer.pow(Integer.valueOf(result[i + 1]));
+          }
+      }
+
+    //Testing Purposes
+    /*
+    System.out.println("Answer is " + answer);
+    */
+
+    return answer;
+  }
+
 }
