@@ -12,9 +12,6 @@ public class Calculator
     //answer is the first element and will be updated by the calculator
     BigInteger answer = BigInteger.valueOf(Long.valueOf(result[0]));
 
-    //resultIndex to keep count of the index in the result array
-    //int resultIndex;
-
     //Testing Purposes
     /*
     for (int i = 0; i < result.length; i++)
@@ -26,7 +23,6 @@ public class Calculator
 
     for (int i = 0; i < result.length; i++)
       {
-        //resultIndex = i;
 
         /*
          * Running through the result array, if an operation is reached,
@@ -75,9 +71,6 @@ public class Calculator
     //answer is the first element and will be updated by the calculator
     Fraction answer = new Fraction(result[0]);
 
-    //resultIndex to keep count of the index in the result array
-    //int resultIndex;
-
     //Testing Purposes
     /*
     for (int i = 0; i < result.length; i++)
@@ -96,8 +89,6 @@ public class Calculator
      */
     for (int i = 0; i < result.length; i++)
       {
-        //resultIndex = i;
-
         if (result[i].equals("+"))
           {
             Fraction second = new Fraction(result[i + 1]);
