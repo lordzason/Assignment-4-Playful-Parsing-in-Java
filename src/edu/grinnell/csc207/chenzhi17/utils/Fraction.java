@@ -6,9 +6,14 @@ import java.math.BigInteger;
  * A simple implementation of Fractions.
  * 
  * @author Samuel A. Rebelsky
- * @author Albert and Zhi, and respective previous partners
+ * @author Albert and Zhi, and our respective previous partners
  * @author CSC152 2005S
  * @version 1.0 of February 2005
+ */
+
+/*
+ * Gratitude to Sam Rebelsky for his assistance on resolving the return type in main
+ * and in showing us how to create a project
  */
 
 public class Fraction
@@ -193,20 +198,20 @@ public class Fraction
     // product of this object's denominator
     // and subtrahend's denominator
 
-    System.out.println("this.num = " + this.num);
+    //System.out.println("this.num = " + this.num);
     resultDenominator = this.denom.multiply(subtrahend.denom);
-    System.out.println("this.num = " + this.num);
-    System.out.println("resultDenominator:" + resultDenominator);
+    //System.out.println("this.num = " + this.num);
+    //System.out.println("resultDenominator:" + resultDenominator);
     // The numerator is more complicated
 
     lefttop = (this.num.multiply(subtrahend.denom));
-    System.out.println(this.num);
+    //System.out.println(this.num);
     righttop = (subtrahend.num.multiply(this.denom));
-    System.out.println("lefttop:" + lefttop + " righttop" + righttop);
+    //System.out.println("lefttop:" + lefttop + " righttop" + righttop);
 
     resultNumerator =
         (this.num.multiply(subtrahend.denom)).subtract(subtrahend.num.multiply(this.denom));
-    System.out.println("resultNumerator:" + resultNumerator);
+    //System.out.println("resultNumerator:" + resultNumerator);
 
     // Return the computed value
     return new Fraction(resultNumerator, resultDenominator);

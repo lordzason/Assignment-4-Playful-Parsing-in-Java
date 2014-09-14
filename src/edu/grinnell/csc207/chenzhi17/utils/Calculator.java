@@ -6,11 +6,14 @@ public class Calculator
 {
   public static BigInteger eval0(String input)
   {
+    //An array to hold elements after separation with a delimiter
     String[] result = StringUtils.splitAt(input, ' ');
 
+    //answer is the first element and will be updated by the calculator
     BigInteger answer = BigInteger.valueOf(Long.valueOf(result[0]));
 
-    int resultIndex;
+    //resultIndex to keep count of the index in the result array
+    //int resultIndex;
 
     //Testing Purposes
     /*
@@ -23,31 +26,36 @@ public class Calculator
 
     for (int i = 0; i < result.length; i++)
       {
-        resultIndex = i;
+        //resultIndex = i;
 
+        /*
+         * Running through the result array, if an operation is reached,
+         * one of the if statements will be called 
+         * and the proper operation will be carried out.
+         */
         if (result[i].equals("+"))
           {
             answer =
-                answer.add(BigInteger.valueOf(Long.valueOf(result[resultIndex + 1])));
+                answer.add(BigInteger.valueOf(Long.valueOf(result[i + 1])));
           }
         else if (result[i].equals("-"))
           {
             answer =
-                answer.subtract(BigInteger.valueOf(Long.valueOf(result[resultIndex + 1])));
+                answer.subtract(BigInteger.valueOf(Long.valueOf(result[i + 1])));
           }
         else if (result[i].equals("*"))
           {
             answer =
-                answer.multiply(BigInteger.valueOf(Long.valueOf(result[resultIndex + 1])));
+                answer.multiply(BigInteger.valueOf(Long.valueOf(result[i + 1])));
           }
         else if (result[i].equals("/"))
           {
             answer =
-                answer.divide(BigInteger.valueOf(Long.valueOf(result[resultIndex + 1])));
+                answer.divide(BigInteger.valueOf(Long.valueOf(result[i + 1])));
           }
         else if (result[i].equals("^"))
           {
-            answer = answer.pow(Integer.valueOf(result[resultIndex + 1]));
+            answer = answer.pow(Integer.valueOf(result[i + 1]));
           }
       }
 
@@ -61,11 +69,14 @@ public class Calculator
 
   public static Fraction eval1(String input)
   {
+    //An array to hold the elements after separation with a delimiter
     String[] result = StringUtils.splitAt(input, ' ');
 
+    //answer is the first element and will be updated by the calculator
     Fraction answer = new Fraction(result[0]);
 
-    int resultIndex;
+    //resultIndex to keep count of the index in the result array
+    //int resultIndex;
 
     //Testing Purposes
     /*
@@ -76,9 +87,16 @@ public class Calculator
     System.out.println("answer=" + answer);
     */
 
+    /*
+     * Going through the result array,
+     * if an operation is reached,
+     * one of the if statements will be called
+     * and the proper operation with fractions
+     * will be carried out.
+     */
     for (int i = 0; i < result.length; i++)
       {
-        resultIndex = i;
+        //resultIndex = i;
 
         if (result[i].equals("+"))
           {
