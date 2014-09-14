@@ -2,13 +2,15 @@ package edu.grinnell.csc207.chenzhi17.utils;
 
 import static org.junit.Assert.*;
 
+import org.junit.Test;
+
 public class StringUtilsTest
 {
 
-  //@Test
+  @Test
   public void testSplitAt()
   {
-    
+
     assertArrayEquals(new String[] { "a", "b", "c" },
                       StringUtils.splitAt("a:b:c", ':'));
     assertArrayEquals(new String[] { "a", "b", "c" },
@@ -23,17 +25,17 @@ public class StringUtilsTest
                       StringUtils.splitAt(":a", ':'));
     assertArrayEquals("trailing empty field", new String[] { "a", "" },
                       StringUtils.splitAt("a:", ':'));
-    
-    //CSV Tests
-    /*
-     assertArrayEquals (new String[] { "a", "b", "c" },
-                       StringUtils.splitAt("a,b,c", ','));
-    assertArrayEquals (new String[] { "a,b", "c" },
-                       StringUtils.splitAt("\"a,b\",c", ','));
-    assertArrayEquals (new String[] { "a", "b,b\"", "c" },
-                       StringUtils.splitAt("a,\"b,b\"\"\",c", ','));
-  */
-    
   }
-  
+    @Test
+    //CSV Tests
+    public void splitCSV()
+    {
+    assertArrayEquals(new String[] { "a", "b", "c" },
+                      StringUtils.splitCSV("a,b,c"));
+    assertArrayEquals(new String[] { "a,b", "c" },
+                      StringUtils.splitCSV("\"a,b\",c"));
+    assertArrayEquals(new String[] { "a", "b,b\"", "c" },
+                      StringUtils.splitCSV("a,\"b,b\"\"\",c"));
+    }
+
 }
