@@ -26,16 +26,20 @@ public class StringUtilsTest
     assertArrayEquals("trailing empty field", new String[] { "a", "" },
                       StringUtils.splitAt("a:", ':'));
   }
-    @Test
-    //CSV Tests
-    public void splitCSV()
-    {
+
+  @Test
+  //CSV Tests
+    public
+    void splitCSV()
+  {
     assertArrayEquals(new String[] { "a", "b", "c" },
                       StringUtils.splitCSV("a,b,c"));
     assertArrayEquals(new String[] { "a,b", "c" },
                       StringUtils.splitCSV("\"a,b\",c"));
     assertArrayEquals(new String[] { "a", "b,b\"", "c" },
                       StringUtils.splitCSV("a,\"b,b\"\"\",c"));
-    }
+    assertArrayEquals(new String[] { "a", "b\"b", "c" }, 
+                      StringUtils.splitCSV("a,\"b\"\"b\",c"));
+  }
 
 }

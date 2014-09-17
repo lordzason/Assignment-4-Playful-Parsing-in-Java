@@ -92,119 +92,117 @@ public class StringUtils
 
   public static String[] splitCSV(String input)
   {
-    int index;
-    int strArrayIndex;
-    int beginIndex = 0;
-    int delimiterCount = 0;
-    int commaDelimiterCount = 0;
-    int locationIndex = 0;
-    int delimiterLocationIndex = 0;
-    int doubleQuotes = 0;
-    /*
-    variable doubleQuotes to determine whether a comma is inside double quotation marks or not.
-    0 for not in double quotes. 1 for in double quotes.
-     */
 
-    System.out.print("Here!\n");
+    System.out.println("CSV test begin:");
 
-    //Determine the number of delimiters
-    for (index = 0; index < input.length(); index++)
+    int commaCount = 0;
+    Boolean specialCommaZone = Boolean.FALSE;
+
+    //Count the number of commas not within double quotation marks
+    //to determine the number of items after a CSV split
+    for (int inputCharIndex = 0; inputCharIndex < input.length(); inputCharIndex++)
       {
-        if ((doubleQuotes == 0) && (input.charAt(index) == '"'))
+        if ((specialCommaZone.equals(Boolean.FALSE))
+            && (input.charAt(inputCharIndex) == ','))
           {
-            doubleQuotes = 1;
-            delimiterCount++;
+            commaCount++;
           }
-        else if ((doubleQuotes == 1) && (input.charAt(index) == '"'))
+        else if ((specialCommaZone.equals(Boolean.FALSE))
+                 && (input.charAt(inputCharIndex) == '"'))
           {
-            doubleQuotes = 0;
-            delimiterCount++;
+            specialCommaZone = Boolean.TRUE;
           }
-        else if ((doubleQuotes == 0) && (input.charAt(index) == ','))
+        else if ((specialCommaZone.equals(Boolean.TRUE))
+                 && (input.charAt(inputCharIndex) == '"'))
           {
-            delimiterCount++;
-            commaDelimiterCount++;
+            specialCommaZone = Boolean.FALSE;
           }
       }
 
-    System.out.println("delimitercount=" + delimiterCount);
-    System.out.println("commaDelimiterCount=" + commaDelimiterCount);
-    System.out.println("doubleQuotes=" + doubleQuotes);
-    
-    //Create an array to hold values after splitting
-    String[] strArray = new String[commaDelimiterCount + 1];
+    //A string buffer to hold items during a CSV split
+    StringBuffer elementHolder = new StringBuffer(input.length() + 1);
 
-    //Create an array to hold locations of delimiters
-    int[] delimiterLocations = new int[delimiterCount];
+    //An array to hold items after CSV split
+    String[] strArray = new String[commaCount + 1];
+    int strArrayIndex = 0;
 
-    //Determine the location of delimiters
-    for (index = 0; index < input.length(); index++)
+    //Splitting the input string based on CSV splitting rules
+    for (int charIndex = 0; charIndex < input.length(); charIndex++)
       {
-        if ((doubleQuotes == 0) && (input.charAt(index) == '"'))
+        if ((input.charAt(charIndex) == ',')
+            && (specialCommaZone.equals(Boolean.FALSE)))
           {
-            doubleQuotes = 1;
-            delimiterLocations[locationIndex] = index;
-            System.out.println("delimiterLocations[" + locationIndex + "]="
-                + index);
-            locationIndex++;
+            //System.out.println("Here3!" + elementHolder.toString());
+            strArray[strArrayIndex] = elementHolder.toString();
+            System.out.println("strArray[" + strArrayIndex + "]="
+                               + strArray[strArrayIndex]);
+            strArrayIndex++;
+            elementHolder.delete(0, elementHolder.length());
           }
-        else if ((doubleQuotes == 1) && (input.charAt(index) == '"'))
+        else if ((input.charAt(charIndex) == ',')
+                 && (specialCommaZone.equals(Boolean.TRUE)))
           {
-            doubleQuotes = 0;
-            delimiterLocations[locationIndex] = index;
-            System.out.println("delimiterLocations[" + locationIndex + "]="
-                + index);
-            locationIndex++;
+            //System.out.println("Here!" + elementHolder.toString());
+            elementHolder.append(',');
+            //System.out.println("Here2!" + elementHolder.toString());
           }
-        else if ((doubleQuotes == 0) && (input.charAt(index) == ','))
+        else if ((input.charAt(charIndex) == '\"')
+                 && (input.charAt(charIndex + 1) == '\"'))
           {
-            delimiterLocations[locationIndex] = index;
-
-            //Comments for testing
-            System.out.println("delimiterLocations[" + locationIndex + "]="
-                               + index);
-            
-            locationIndex++;
+            elementHolder.append('"');
+            charIndex++;
+          }
+        else if ((input.charAt(charIndex) == '\"')
+                 && (input.charAt(charIndex + 1) != '\"')
+                 && (input.charAt(charIndex + 1) != ',')
+                 && (specialCommaZone.equals(Boolean.FALSE)))
+          {
+            specialCommaZone = Boolean.TRUE;
+          }
+        else if ((input.charAt(charIndex) == '\"')
+                 && (input.charAt(charIndex + 1) != '\"')
+                 && (input.charAt(charIndex + 1) != ',')
+                 && (specialCommaZone.equals(Boolean.TRUE)))
+          {
+            specialCommaZone = Boolean.FALSE;
+          }
+        else if ((input.charAt(charIndex) == ',')
+                 && (input.charAt(charIndex + 1) == '\"')
+                 && (specialCommaZone.equals(Boolean.FALSE)))
+          {
+            specialCommaZone = Boolean.TRUE;
+          }
+        else if ((input.charAt(charIndex) == ',')
+                 && (input.charAt(charIndex + 1) == '\"')
+                 && (specialCommaZone.equals(Boolean.TRUE)))
+          {
+            specialCommaZone = Boolean.FALSE;
+          }
+        else if ((input.charAt(charIndex) == '\"')
+                 && (input.charAt(charIndex + 1) == ',')
+                 && (specialCommaZone.equals(Boolean.TRUE)))
+          {
+            specialCommaZone = Boolean.FALSE;
+          }
+        else if ((input.charAt(charIndex) == '\"')
+                 && (input.charAt(charIndex + 1) == ',')
+                 && (specialCommaZone.equals(Boolean.FALSE)))
+          {
+            specialCommaZone = Boolean.TRUE;
+          }
+        else
+          {
+            elementHolder.append(input.charAt(charIndex));
+            //System.out.println(elementHolder.toString());
           }
       }
 
-    //Split based on location of delimiters
-    for (strArrayIndex = 0; strArrayIndex < delimiterCount; strArrayIndex++)
-      {
+    strArray[strArrayIndex] = elementHolder.toString();
+    System.out.println("strArray[" + strArrayIndex + "]="
+                       + strArray[strArrayIndex]);
 
-        strArray[strArrayIndex] =
-            input.substring(beginIndex,
-                            delimiterLocations[delimiterLocationIndex]);
+    System.out.println("CSV test end.");
 
-        //Comments for testing
-        System.out.println("strArray["
-                           + strArrayIndex
-                           + "]="
-                           + input.substring(beginIndex,
-                                             delimiterLocations[delimiterLocationIndex]));
-
-        beginIndex = delimiterLocations[delimiterLocationIndex] + 1;
-        delimiterLocationIndex++;
-      }
-
-    //Comments for testing
-    System.out.println("delimiterLocationIndex=" + delimiterLocationIndex);
-    System.out.println("beginIndex=" + beginIndex);
-    System.out.println("strArrayIndex=" + strArrayIndex);
-
-    //Gets last segment
-    strArray[strArrayIndex] = input.substring(beginIndex, input.length());
-
-    System.out.println("Here2!");
-    
-    //Comments for testing
-    System.out.println("strArray["
-                       + strArrayIndex
-                       + "]="
-                       + input.substring(beginIndex, input.length()));
-    
-    System.out.println("Here3!");
-    
     return strArray;
-  }//splitCSV[String input]
+  }//splitCSV(String input)
 }
