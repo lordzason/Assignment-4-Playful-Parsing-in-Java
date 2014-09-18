@@ -82,6 +82,7 @@ public class Fraction
    */
   public Fraction(int num, int denom)
   {
+    
     BigInteger top = (BigInteger.valueOf(num));
     BigInteger bottom = (BigInteger.valueOf(denom));
     

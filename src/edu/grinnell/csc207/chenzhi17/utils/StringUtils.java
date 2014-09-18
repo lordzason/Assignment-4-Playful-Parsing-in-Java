@@ -1,6 +1,8 @@
 package edu.grinnell.csc207.chenzhi17.utils;
 
-//import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * @author chenzhi17
@@ -93,116 +95,102 @@ public class StringUtils
   public static String[] splitCSV(String input)
   {
 
-    System.out.println("CSV test begin:");
+    /* Storage objects */
+    StringBuffer elementHolder = new StringBuffer(); // hold items temporarily during split                                         
+    LinkedList<String> finalArray = new LinkedList<String>(); // store final strings from splitting
 
-    int commaCount = 0;
+    /**
+     * Variables used in the splitting process 
+     * 
+     * specialCommaZone        : TRUE when commas should be ignored during splitting
+     *                           FALSE when commas should be not be ignored during splitting
+     *                           preset to FALSE
+     *                    
+     * charIndex and nextIndex : counters for the iteration
+     * currentChar and nextChar: denotes current and next characters during iteration
+     */
+
     Boolean specialCommaZone = Boolean.FALSE;
+    int strLength = input.length();
+    int charIndex = 0;
+    int nextIndex = 0;
+    char quote = '\"';
+    char comma = ',';
+    char currentChar;
+    char nextChar;
 
-    //Count the number of commas not within double quotation marks
-    //to determine the number of items after a CSV split
-    for (int inputCharIndex = 0; inputCharIndex < input.length(); inputCharIndex++)
+    /* Split the input string based on CSV splitting rules */
+    for (charIndex = 0; charIndex < strLength; charIndex++)
       {
-        if ((specialCommaZone.equals(Boolean.FALSE))
-            && (input.charAt(inputCharIndex) == ','))
+
+        // check if nextIndex is within string,input
+        if (charIndex + 1 < strLength)
           {
-            commaCount++;
+            nextIndex = charIndex + 1; // increment counter
           }
-        else if ((specialCommaZone.equals(Boolean.FALSE))
-                 && (input.charAt(inputCharIndex) == '"'))
+
+        // get current and next character
+        currentChar = input.charAt(charIndex);
+        nextChar = input.charAt(nextIndex);
+
+        if ((currentChar == comma) && (!specialCommaZone))
+          {
+            finalArray.add(elementHolder.toString()); // add buffer contents to final array storage
+            elementHolder.delete(0, elementHolder.length()); //clean up buffer
+          }
+        else if ((currentChar == comma) && (specialCommaZone))
+          {
+            elementHolder.append(comma); //add to buffer 
+          }
+        else if ((currentChar == quote) && (nextChar == quote))
+          {
+            elementHolder.append(quote);
+            charIndex++; //move on to next char 
+          }
+        else if ((currentChar == quote) && (nextChar != quote)
+                 && (nextChar != comma) && (!specialCommaZone))
+          {
+            specialCommaZone = Boolean.TRUE; //turn on specialCommaZone signal
+          }
+        else if ((currentChar == quote) && (nextChar != quote)
+                 && (nextChar != comma) && (specialCommaZone))
+          {
+            specialCommaZone = Boolean.FALSE; //turn off special CommaZone signal
+          }
+        else if ((currentChar == comma) && (nextChar == quote)
+                 && (!specialCommaZone))
           {
             specialCommaZone = Boolean.TRUE;
           }
-        else if ((specialCommaZone.equals(Boolean.TRUE))
-                 && (input.charAt(inputCharIndex) == '"'))
+        else if ((currentChar == comma) && (nextChar == quote)
+                 && (specialCommaZone))
           {
             specialCommaZone = Boolean.FALSE;
           }
-      }
-
-    //A string buffer to hold items during a CSV split
-    StringBuffer elementHolder = new StringBuffer(input.length() + 1);
-
-    //An array to hold items after CSV split
-    String[] strArray = new String[commaCount + 1];
-    int strArrayIndex = 0;
-
-    //Splitting the input string based on CSV splitting rules
-    for (int charIndex = 0; charIndex < input.length(); charIndex++)
-      {
-        if ((input.charAt(charIndex) == ',')
-            && (specialCommaZone.equals(Boolean.FALSE)))
-          {
-            //System.out.println("Here3!" + elementHolder.toString());
-            strArray[strArrayIndex] = elementHolder.toString();
-            System.out.println("strArray[" + strArrayIndex + "]="
-                               + strArray[strArrayIndex]);
-            strArrayIndex++;
-            elementHolder.delete(0, elementHolder.length());
-          }
-        else if ((input.charAt(charIndex) == ',')
-                 && (specialCommaZone.equals(Boolean.TRUE)))
-          {
-            //System.out.println("Here!" + elementHolder.toString());
-            elementHolder.append(',');
-            //System.out.println("Here2!" + elementHolder.toString());
-          }
-        else if ((input.charAt(charIndex) == '\"')
-                 && (input.charAt(charIndex + 1) == '\"'))
-          {
-            elementHolder.append('"');
-            charIndex++;
-          }
-        else if ((input.charAt(charIndex) == '\"')
-                 && (input.charAt(charIndex + 1) != '\"')
-                 && (input.charAt(charIndex + 1) != ',')
-                 && (specialCommaZone.equals(Boolean.FALSE)))
-          {
-            specialCommaZone = Boolean.TRUE;
-          }
-        else if ((input.charAt(charIndex) == '\"')
-                 && (input.charAt(charIndex + 1) != '\"')
-                 && (input.charAt(charIndex + 1) != ',')
-                 && (specialCommaZone.equals(Boolean.TRUE)))
+        else if ((currentChar == quote) && (nextChar == comma)
+                 && (specialCommaZone))
           {
             specialCommaZone = Boolean.FALSE;
           }
-        else if ((input.charAt(charIndex) == ',')
-                 && (input.charAt(charIndex + 1) == '\"')
-                 && (specialCommaZone.equals(Boolean.FALSE)))
-          {
-            specialCommaZone = Boolean.TRUE;
-          }
-        else if ((input.charAt(charIndex) == ',')
-                 && (input.charAt(charIndex + 1) == '\"')
-                 && (specialCommaZone.equals(Boolean.TRUE)))
-          {
-            specialCommaZone = Boolean.FALSE;
-          }
-        else if ((input.charAt(charIndex) == '\"')
-                 && (input.charAt(charIndex + 1) == ',')
-                 && (specialCommaZone.equals(Boolean.TRUE)))
-          {
-            specialCommaZone = Boolean.FALSE;
-          }
-        else if ((input.charAt(charIndex) == '\"')
-                 && (input.charAt(charIndex + 1) == ',')
-                 && (specialCommaZone.equals(Boolean.FALSE)))
+        else if ((currentChar == quote) && (nextChar == comma)
+                 && (!specialCommaZone))
           {
             specialCommaZone = Boolean.TRUE;
           }
         else
           {
-            elementHolder.append(input.charAt(charIndex));
-            //System.out.println(elementHolder.toString());
+            elementHolder.append(currentChar);
           }
-      }
+      }//for loop
 
-    strArray[strArrayIndex] = elementHolder.toString();
-    System.out.println("strArray[" + strArrayIndex + "]="
-                       + strArray[strArrayIndex]);
+    finalArray.add(elementHolder.toString());
 
-    System.out.println("CSV test end.");
+    return finalArray.toArray(new String[finalArray.size()]); // convert linkedList to String[] and return
+  } // splitCSV(String input)
 
-    return strArray;
-  }//splitCSV(String input)
+  public static void main(String[] args)
+  {
+
+  }
+
 }
