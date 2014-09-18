@@ -39,6 +39,8 @@ public class Fraction
 
   /** The denominator of the fraction. Must be non-negative. */
   BigInteger denom;
+  
+  /** Fractions that are negative will have the negative sign in the numerator **/
 
   // +--------------+-------------------------------------------------
   // | Constructors |
@@ -51,27 +53,7 @@ public class Fraction
    */
   public Fraction(BigInteger num, BigInteger denom)
   {
-    // when 'num' and 'denom' are both negative find abs() of 'num' and 'denom'
-    if ((num.compareTo(BigInteger.ZERO) == -1)
-        && (denom.compareTo(BigInteger.ZERO) == -1))
-      {
-        num = num.abs();
-        denom = denom.abs();
-      }
-    else if ((num.compareTo(BigInteger.ZERO) != -1)
-             && (denom.compareTo(BigInteger.ZERO) == -1))
-    //if the denominator is negative and the numerator is positive, the numerator becomes positive
-    //and the denominator becomes positive
-      {
-        num = num.multiply(BigInteger.valueOf(-1));
-        denom = denom.abs();
-      }
-
-    BigInteger gCD = num.gcd(denom);
-    //if both num and denom are negative negate gcd before dividing
-
-    this.num = num.divide(gCD);
-    this.denom = denom.divide(gCD);
+    simplifyFraction(num, denom);
 
   } // Fraction(BigInteger, BigInteger)
 
@@ -82,10 +64,16 @@ public class Fraction
    */
   public Fraction(int num, int denom)
   {
-    
+
     BigInteger top = (BigInteger.valueOf(num));
     BigInteger bottom = (BigInteger.valueOf(denom));
-    
+
+    simplifyFraction(top, bottom);
+
+  } // Fraction(int, int)
+
+  public void simplifyFraction(BigInteger top, BigInteger bottom)
+  {
     // when 'num' and 'denom' are both negative find abs() of 'num' and 'denom'
     if ((top.compareTo(BigInteger.ZERO) == -1)
         && (bottom.compareTo(BigInteger.ZERO) == -1))
@@ -101,14 +89,13 @@ public class Fraction
         top = top.multiply(BigInteger.valueOf(-1));
         bottom = bottom.abs();
       }
-    
+
     BigInteger gCD = top.gcd(bottom); // greatest common denominator
 
     // simplify with greatest common denominator
     this.num = top.divide(gCD);
     this.denom = bottom.divide(gCD);
-
-  } // Fraction(int, int)
+  }
 
   /**
    * Turns a fraction in a string into its numerical form
@@ -133,31 +120,11 @@ public class Fraction
       {
         numerator = Integer.parseInt(splitResults[0]);
         denominator = Integer.parseInt(splitResults[1]);
- 
+
         BigInteger top = (BigInteger.valueOf(numerator));
         BigInteger bottom = (BigInteger.valueOf(denominator));
-        
-        // when 'num' and 'denom' are both negative find abs() of 'num' and 'denom'
-        if ((top.compareTo(BigInteger.ZERO) == -1)
-            && (bottom.compareTo(BigInteger.ZERO) == -1))
-          {
-            top = top.abs();
-            bottom = bottom.abs();
-          }
-        else if ((top.compareTo(BigInteger.ZERO) != -1)
-                 && (bottom.compareTo(BigInteger.ZERO) == -1))
-        //if the denominator is negative and the numerator is positive, the numerator becomes positive
-        //and the denominator becomes positive
-          {
-            top = top.multiply(BigInteger.valueOf(-1));
-            bottom = bottom.abs();
-          }
-        
-        BigInteger gCD = top.gcd(bottom); // greatest common denominator
 
-        // simplify with greatest common denominator
-        this.num = top.divide(gCD);
-        this.denom = bottom.divide(gCD);
+        simplifyFraction(top, bottom);
       }
 
   } // Fraction(String)
@@ -165,6 +132,21 @@ public class Fraction
   // +---------+------------------------------------------------------
   // | Methods |
   // +---------+
+
+  /**
+   * Uses remainder to find the fractional part of a mixed fraction
+   * @param none
+   * @return a fraction that is the fractional part 
+   */
+  public Fraction fractional()
+  {
+    BigInteger remainder;
+
+    remainder = this.num.remainder(this.denom);
+
+    return new Fraction(remainder, this.denom);
+    
+  }//Fraction fractional()
 
   /**
    *  Multiplies two fractions. The current object fraction and another fraction
@@ -231,7 +213,6 @@ public class Fraction
     return new Fraction(resultNumerator, resultDenominator);
   }// add(Fraction)
 
-  //NEEDS TO BE FIXED
   /**
    * Subtract another fraction from our current fraction object
    * @param subtrahend
@@ -241,27 +222,10 @@ public class Fraction
   {
     BigInteger resultNumerator;
     BigInteger resultDenominator;
-    //BigInteger righttop;
-    //BigInteger lefttop;
 
-    // The denominator of the result is the
-    // product of this object's denominator
-    // and subtrahend's denominator
-
-    //System.out.println("this.num = " + this.num);
     resultDenominator = this.denom.multiply(subtrahend.denom);
-    //System.out.println("this.num = " + this.num);
-    //System.out.println("resultDenominator:" + resultDenominator);
-    // The numerator is more complicated
-
-    //lefttop = (this.num.multiply(subtrahend.denom));
-    //System.out.println(this.num);
-    //righttop = (subtrahend.num.multiply(this.denom));
-    //System.out.println("lefttop:" + lefttop + " righttop" + righttop);
-
     resultNumerator =
         (this.num.multiply(subtrahend.denom)).subtract(subtrahend.num.multiply(this.denom));
-    //System.out.println("resultNumerator:" + resultNumerator);
 
     // Return the computed value
     return new Fraction(resultNumerator, resultDenominator);
@@ -356,86 +320,5 @@ public class Fraction
     return this.num + "/" + this.denom;
   } // toString()
 
-  public static void main(String[] args)
-    throws Exception
-  {
-    /*
-    Fraction f1;
-    f1 = new Fraction(-10, 3);
-    Fraction f2;
-    f2 = new Fraction(2, 5);
-    Fraction f3;
-    f3 = new Fraction(5, -9);
-    Fraction f4;
-    f4 = new Fraction(-7, -4);
-
-    System.out.println("Negate");
-    System.out.println(f1.negate());
-    System.out.println(f2.negate());
-    System.out.println(f3.negate());
-    System.out.println(f4.negate());
-
-    System.out.println();
-
-    System.out.println("Add");
-    System.out.println(f1.add(f2));
-    System.out.println(f2.add(f3));
-    System.out.println(f3.add(f4));
-    System.out.println(f4.add(f1));
-
-    System.out.println();
-
-    System.out.println("Subtract");
-    System.out.println(f1.subtract(f2));
-    System.out.println(f2.subtract(f3));
-    System.out.println(f3.subtract(f4));
-    System.out.println(f4.subtract(f1));
-
-    System.out.println();
-
-    System.out.println("Divide");
-    System.out.println(f1.divide(f2));
-    System.out.println(f2.divide(f3));
-    System.out.println(f3.divide(f4));
-    System.out.println(f4.divide(f1));
-
-    System.out.println();
-
-    System.out.println("String Constructor to Fraction");
-    Fraction fr1;
-    fr1 = new Fraction("1/2");
-    System.out.println("fr1 = " + fr1);
-    Fraction fr2;
-    fr2 = new Fraction("17");
-    System.out.println("fr2 = " + fr2);
-    Fraction fr3;
-    fr3 = new Fraction("-1/2");
-    System.out.println("fr3 = " + fr3);
-    Fraction fr4;
-    fr4 = new Fraction("1/-2");
-    System.out.println("fr4 = " + fr4);
-    Fraction fr5;
-    fr5 = new Fraction("-1/2");
-    System.out.println("fr5 = " + fr5);
-    Fraction fr6;
-    fr6 = new Fraction("-1/-2");
-    System.out.println("fr6 = " + fr6);
-    Fraction fr7;
-    fr7 = new Fraction("-17");
-    System.out.println("fr7 = " + fr7);
-    Fraction fr8;
-    fr8 = new Fraction("6/-18");
-    System.out.println("fr8 = " + fr8);
-
-    System.out.println();
-
-    System.out.println("Exponent");
-    System.out.println(f1.pow(2));
-    System.out.println(f2.pow(-3));
-    System.out.println(f3.pow(0));
-    System.out.println(f4.pow(10));
-*/
-
-  }//main()
 } // class Fraction
 

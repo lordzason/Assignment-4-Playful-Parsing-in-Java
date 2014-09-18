@@ -12,15 +12,6 @@ public class Calculator
     //answer is the first element and will be updated by the calculator
     BigInteger answer = BigInteger.valueOf(Long.valueOf(result[0]));
 
-    //Testing Purposes
-    /*
-    for (int i = 0; i < result.length; i++)
-      {
-        System.out.println("result[" + i + "]=" + result[i]);
-      }
-    System.out.println("answer=" + answer);
-    */
-
     for (int i = 0; i < result.length; i++)
       {
 
@@ -55,11 +46,6 @@ public class Calculator
           }
       }
 
-    //Testing Purposes
-    /*
-    System.out.println("Answer is " + answer);
-    */
-
     return answer;
   }
 
@@ -70,15 +56,6 @@ public class Calculator
 
     //answer is the first element and will be updated by the calculator
     Fraction answer = new Fraction(result[0]);
-
-    //Testing Purposes
-    /*
-    for (int i = 0; i < result.length; i++)
-      {
-        System.out.println("result[" + i + "]=" + result[i]);
-      }
-    System.out.println("answer=" + answer);
-    */
 
     /*
      * Going through the result array,
@@ -114,11 +91,6 @@ public class Calculator
             answer = answer.pow(Integer.valueOf(result[i + 1]));
           }
       }
-
-    //Testing Purposes
-    /*
-    System.out.println("Answer is " + answer);
-    */
 
     return answer;
   }

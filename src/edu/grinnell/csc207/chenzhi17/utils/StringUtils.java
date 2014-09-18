@@ -160,37 +160,32 @@ public class StringUtils
         else if ((currentChar == comma) && (nextChar == quote)
                  && (!specialCommaZone))
           {
-            specialCommaZone = Boolean.TRUE;
+            specialCommaZone = Boolean.TRUE; //turn on specialCommaZone signal
           }
         else if ((currentChar == comma) && (nextChar == quote)
                  && (specialCommaZone))
           {
-            specialCommaZone = Boolean.FALSE;
+            specialCommaZone = Boolean.FALSE; //turn off special CommaZone signal
           }
         else if ((currentChar == quote) && (nextChar == comma)
                  && (specialCommaZone))
           {
-            specialCommaZone = Boolean.FALSE;
+            specialCommaZone = Boolean.FALSE; //turn off special CommaZone signal
           }
         else if ((currentChar == quote) && (nextChar == comma)
                  && (!specialCommaZone))
           {
-            specialCommaZone = Boolean.TRUE;
+            specialCommaZone = Boolean.TRUE; //turn on specialCommaZone signal
           }
         else
           {
-            elementHolder.append(currentChar);
+            elementHolder.append(currentChar); //adding a character to the element holder
           }
       }//for loop
 
-    finalArray.add(elementHolder.toString());
+    finalArray.add(elementHolder.toString()); //stores the last element of the input array to the element holder
 
     return finalArray.toArray(new String[finalArray.size()]); // convert linkedList to String[] and return
   } // splitCSV(String input)
-
-  public static void main(String[] args)
-  {
-
-  }
 
 }
